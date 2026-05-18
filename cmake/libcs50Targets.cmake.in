@@ -1,0 +1,27 @@
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+
+if(NOT TARGET cs50::cs50-shared)
+  add_library(cs50::cs50-shared SHARED IMPORTED)
+  set_target_properties(cs50::cs50-shared PROPERTIES
+    IMPORTED_LOCATION "${_IMPORT_PREFIX}/@LIBCS50_LIBDIR@/libcs50${CMAKE_SHARED_LIBRARY_SUFFIX}"
+    INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@LIBCS50_INCLUDEDIR@"
+  )
+endif()
+
+if(NOT TARGET cs50::cs50-static)
+  add_library(cs50::cs50-static STATIC IMPORTED)
+  set_target_properties(cs50::cs50-static PROPERTIES
+    IMPORTED_LOCATION "${_IMPORT_PREFIX}/@LIBCS50_LIBDIR@/libcs50${CMAKE_STATIC_LIBRARY_SUFFIX}"
+    INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@LIBCS50_INCLUDEDIR@"
+  )
+endif()
+
+if(NOT TARGET cs50::cs50)
+  if(BUILD_SHARED_LIBS)
+    add_library(cs50::cs50 ALIAS cs50::cs50-shared)
+  elseif(DEFINED BUILD_SHARED_LIBS)
+    add_library(cs50::cs50 ALIAS cs50::cs50-static)
+  else()
+    add_library(cs50::cs50 ALIAS cs50::cs50-shared)
+  endif()
+endif()
