@@ -1,0 +1,3 @@
+set(libcs50_FOUND TRUE)
+
+include("${CMAKE_CURRENT_LIST_DIR}/libcs50Targets.cmake")
